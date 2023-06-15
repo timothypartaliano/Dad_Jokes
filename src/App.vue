@@ -1,26 +1,48 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ currentJoke.setup }}</h5>
+            <p class="card-text">{{ currentJoke.punchline }}</p>
+            <div class="text-center mt-4">
+              <button class="btn btn-primary" @click="getJoke">Reload</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      currentJoke: {}
+    };
+  },
+  mounted() {
+    this.getJoke();
+  },
+  methods: {
+    getJoke() {
+      fetch('https://official-joke-api.appspot.com/random_joke')
+        .then(response => response.json())
+        .then(data => {
+          this.currentJoke = data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.container {
+  margin-top: 50px;
 }
 </style>
